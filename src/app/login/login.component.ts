@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   Form,
@@ -8,8 +8,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { map } from 'rxjs';
-import { Account } from '../atm/atm.model';
+import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
+import { Account, Atm } from '../atm/atm.model';
 import { AtmService } from '../services/atm.api.service';
 
 @Component({
@@ -17,16 +17,27 @@ import { AtmService } from '../services/atm.api.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
+  private _destroy$ = new Subject<void>();
+
   form: FormGroup = new FormGroup({
     accountNumber: new FormControl(''),
     pin: new FormControl(''),
   });
   submitted = false;
 
+  atmDetails = this._atmService.getAtmDetails().pipe(map((atm) => atm));
 
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private _atmService: AtmService
+  ) {}
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private _atmService: AtmService) {}
+  ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
+  }
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -46,7 +57,21 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.router.navigate(['/atm']);
+    this.atmDetails.pipe(takeUntil(this._destroy$)).subscribe((atm) => {
+      const account = atm.accounts.find(
+        (acc) => acc.id === this.f['accountNumber'].value
+      );
+      console.log(account);
+      if (account) {
+        if (account.pin === this.f['pin'].value) {
+          this.router.navigate(['/atm']);
+        } else {
+          this.form.reset();
+        }
+      } else {
+        this.form.reset();
+      }
+    });
   }
 
   onReset(): void {

@@ -1,4 +1,4 @@
-import { Atm } from './../atm/atm.model';
+import { Account, Atm } from './../atm/atm.model';
 import { Injectable } from '@angular/core';
 import {
   BehaviorSubject,
@@ -6,6 +6,7 @@ import {
   map,
   Observable,
   share,
+  Subject,
 } from 'rxjs';
 import store from 'store2';
 
@@ -51,6 +52,12 @@ export class AtmService {
     ],
   };
   private _atmDetails = new BehaviorSubject<Atm>(this.atmDetails);
+  private _accountDetails = new BehaviorSubject<Account>({
+    id: '',
+    pin: '',
+    balance: 0,
+    overDraft: 0,
+  });
 
   constructor() {
     store.set('atm', this.atmDetails);
@@ -67,5 +74,13 @@ export class AtmService {
   resetAtmDetails(): void {
     store.set('atm', this.atmDetails);
     this._atmDetails.next(this.atmDetails);
+  }
+
+  setAccountDetails(account: Account): void {
+    this._accountDetails.next(account);
+  }
+
+  getAccountDetails(): Observable<Account> {
+    return this._accountDetails.pipe(map((account) => account));
   }
 }

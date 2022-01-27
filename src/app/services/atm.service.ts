@@ -1,4 +1,4 @@
-import { Account, Atm } from './../atm/atm.model';
+import { Account, Atm } from '../atm/atm.model';
 import { Injectable } from '@angular/core';
 import {
   BehaviorSubject,
@@ -22,13 +22,13 @@ export class AtmService {
       {
         id: '123456789',
         pin: '1234',
-        balance: 1000,
+        balance: 800,
         overDraft: 200,
       },
       {
         id: '987654321',
         pin: '4321',
-        balance: 1000,
+        balance: 1230,
         overDraft: 150,
       },
     ],
@@ -82,5 +82,15 @@ export class AtmService {
 
   getAccountDetails(): Observable<Account> {
     return this._accountDetails.pipe(map((account) => account));
+  }
+
+  withdraw(amount: number): void {
+    const account = this._accountDetails.getValue();
+    if (account.balance >= amount) {
+      account.balance -= amount;
+      this._accountDetails.next(account);
+    } else {
+      alert('Insufficient funds');
+    }
   }
 }

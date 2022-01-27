@@ -11,7 +11,7 @@ import {
 } from 'rxjs';
 import store from 'store2';
 
-enum NoteNames {
+export enum NoteNames {
   FIVE = 5,
   TEN = 10,
   TWENTY = 20,

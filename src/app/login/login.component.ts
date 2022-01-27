@@ -65,8 +65,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         if (account.pin === this.f['pin'].value) {
           this._atmService.setAccountDetails(account);
           this.router.navigate(['/atm']);
-        } else {
-          this.form.reset();
         }
       } else {
         this.form.reset();

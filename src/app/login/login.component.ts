@@ -41,8 +41,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      accountNumber: ['', Validators.required],
-      pin: ['', Validators.required],
+      accountNumber: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(9)]],
+      pin: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
     });
   }
 
@@ -64,6 +64,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       if (account) {
         if (account.pin === this.f['pin'].value) {
           this._atmService.setAccountDetails(account);
+          this._atmService.setLoggIn(true);
           this.router.navigate(['/atm']);
         }
       } else {

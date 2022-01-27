@@ -10,6 +10,13 @@ import {
 } from 'rxjs';
 import store from 'store2';
 
+enum NoteNames {
+  FIVE = 5,
+  TEN = 10,
+  TWENTY = 20,
+  FIFTY = 50,
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -34,19 +41,19 @@ export class AtmService {
     ],
     Notes: [
       {
-        name: 50,
+        name: NoteNames.FIFTY,
         amount: 10,
       },
       {
-        name: 20,
+        name: NoteNames.TWENTY,
         amount: 30,
       },
       {
-        name: 10,
+        name: NoteNames.TEN,
         amount: 30,
       },
       {
-        name: 5,
+        name: NoteNames.FIVE,
         amount: 20,
       },
     ],
@@ -101,31 +108,25 @@ export class AtmService {
       let requestedAmount = amount;
       while (requestedAmount > 0) {
         switch (requestedAmount > 0) {
-          case requestedAmount >= 50 && atmDetails.Notes[0].amount > 0:
+          case requestedAmount >= NoteNames.FIFTY && atmDetails.Notes[0].amount > 0:
             atmDetails.Notes[0].amount--;
-            requestedAmount -= 50;
+            requestedAmount -= NoteNames.FIFTY;
             break;
-          case requestedAmount >= 20 && atmDetails.Notes[1].amount > 0:
+          case requestedAmount >= NoteNames.TWENTY && atmDetails.Notes[1].amount > 0:
             atmDetails.Notes[1].amount--;
-            requestedAmount -= 20;
+            requestedAmount -= NoteNames.TWENTY;
             break;
-          case requestedAmount >= 10 && atmDetails.Notes[2].amount > 0:
+          case requestedAmount >= NoteNames.TEN && atmDetails.Notes[2].amount > 0:
             atmDetails.Notes[2].amount--;
-            requestedAmount -= 10;
+            requestedAmount -= NoteNames.TEN;
             break;
-          case requestedAmount >= 5 && atmDetails.Notes[3].amount > 0:
+          case requestedAmount >= NoteNames.FIVE && atmDetails.Notes[3].amount > 0:
             atmDetails.Notes[3].amount--;
-            requestedAmount -= 5;
+            requestedAmount -= NoteNames.FIVE;
             break;
         }
       }
       atmDetails.totalCash -= amount;
-      console.log(
-        atmDetails.totalCash,
-        'total cash',
-        atmDetails.Notes,
-        'notes'
-      );
     });
   }
 }

@@ -45,8 +45,8 @@
                   'is-invaild': submitted && f['amount'].errors
                 }"
               />
-              <span *ngIf="f['amount'].errors && submitted">
-                Please enter value divisable By five
+              <span class="invaild-text" *ngIf="f['amount'].errors && submitted">
+                Please enter value divisable by five
               </span>
             </div>
             <button type="submit" class="btn btn-primary">Withdraw</button>

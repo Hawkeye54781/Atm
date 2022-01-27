@@ -24,6 +24,8 @@ export enum NoteNames {
 
 //not actually a api service, but a service that handles the storage of the atm
 export class AtmService implements OnDestroy {
+  private userLoggedIn = new BehaviorSubject<boolean>(false);
+
   private atmDetails: Atm = {
     totalCash: 1500,
     accounts: [
@@ -77,6 +79,14 @@ export class AtmService implements OnDestroy {
   ngOnDestroy(): void {
     this._destroy$.next();
     this._destroy$.complete();
+  }
+
+  setLoggIn(loggedIn: boolean): void {
+    this.userLoggedIn.next(loggedIn);
+  }
+
+  getLoggedIn(): Observable<boolean> {
+    return this.userLoggedIn;
   }
 
   getAtmDetails(): Observable<Atm> {

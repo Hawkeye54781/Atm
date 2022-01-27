@@ -30,7 +30,7 @@ export class AtmComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      amount: [0, [Validators.required, divisableByFive]],
+      amount: [0, [Validators.required, divisableByFive, Validators.min(0)]],
     });
   }
 

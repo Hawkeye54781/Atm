@@ -101,19 +101,19 @@ export class AtmService {
       let requestedAmount = amount;
       while (requestedAmount > 0) {
         switch (requestedAmount > 0) {
-          case requestedAmount >= 50:
+          case requestedAmount >= 50 && atmDetails.Notes[0].amount > 0:
             atmDetails.Notes[0].amount--;
             requestedAmount -= 50;
             break;
-          case requestedAmount >= 20:
+          case requestedAmount >= 20 && atmDetails.Notes[1].amount > 0:
             atmDetails.Notes[1].amount--;
             requestedAmount -= 20;
             break;
-          case requestedAmount >= 10:
+          case requestedAmount >= 10 && atmDetails.Notes[2].amount > 0:
             atmDetails.Notes[2].amount--;
             requestedAmount -= 10;
             break;
-          case requestedAmount >= 5:
+          case requestedAmount >= 5 && atmDetails.Notes[3].amount > 0:
             atmDetails.Notes[3].amount--;
             requestedAmount -= 5;
             break;

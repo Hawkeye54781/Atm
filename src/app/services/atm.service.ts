@@ -87,10 +87,31 @@ export class AtmService {
   withdraw(amount: number): void {
     const account = this._accountDetails.getValue();
     if (account.balance >= amount) {
+      this.atmNotesToDispense(amount);
       account.balance -= amount;
       this._accountDetails.next(account);
     } else {
       alert('Insufficient funds');
     }
+  }
+
+  private atmNotesToDispense(amount: number): void {
+    this._atmDetails.subscribe((atmDetails) => {
+    switch (amount) {
+      case 50:
+        atmDetails.Notes[2].amount--;
+        break;
+      case 20:
+        atmDetails.Notes[1].amount--;
+        break;
+      case 10:
+        atmDetails.Notes[0].amount--;
+        break;
+      case 5:
+        atmDetails.Notes[3].amount--;
+    }
+      atmDetails.totalCash -= amount;
+      console.log(atmDetails.totalCash , 'total cash', atmDetails.Notes, 'notes');
+    });
   }
 }

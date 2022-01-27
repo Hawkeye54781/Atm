@@ -1,4 +1,4 @@
-import { Account, Atm } from '../atm/atm.model';
+import { Account, Atm, Note } from '../atm/atm.model';
 import { Injectable } from '@angular/core';
 import {
   BehaviorSubject,
@@ -34,19 +34,19 @@ export class AtmService {
     ],
     Notes: [
       {
-        name: '10',
-        amount: 30,
-      },
-      {
-        name: '20',
-        amount: 30,
-      },
-      {
-        name: '50',
+        name: 50,
         amount: 10,
       },
       {
-        name: '5',
+        name: 20,
+        amount: 30,
+      },
+      {
+        name: 10,
+        amount: 30,
+      },
+      {
+        name: 5,
         amount: 20,
       },
     ],
@@ -96,22 +96,36 @@ export class AtmService {
   }
 
   private atmNotesToDispense(amount: number): void {
+
     this._atmDetails.subscribe((atmDetails) => {
-    switch (amount) {
-      case 50:
-        atmDetails.Notes[2].amount--;
-        break;
-      case 20:
-        atmDetails.Notes[1].amount--;
-        break;
-      case 10:
-        atmDetails.Notes[0].amount--;
-        break;
-      case 5:
-        atmDetails.Notes[3].amount--;
-    }
+      let requestedAmount = amount;
+      while (requestedAmount > 0) {
+        switch (requestedAmount > 0) {
+          case requestedAmount >= 50:
+            atmDetails.Notes[0].amount--;
+            requestedAmount -= 50;
+            break;
+          case requestedAmount >= 20:
+            atmDetails.Notes[1].amount--;
+            requestedAmount -= 20;
+            break;
+          case requestedAmount >= 10:
+            atmDetails.Notes[2].amount--;
+            requestedAmount -= 10;
+            break;
+          case requestedAmount >= 5:
+            atmDetails.Notes[3].amount--;
+            requestedAmount -= 5;
+            break;
+        }
+      }
       atmDetails.totalCash -= amount;
-      console.log(atmDetails.totalCash , 'total cash', atmDetails.Notes, 'notes');
+      console.log(
+        atmDetails.totalCash,
+        'total cash',
+        atmDetails.Notes,
+        'notes'
+      );
     });
   }
 }

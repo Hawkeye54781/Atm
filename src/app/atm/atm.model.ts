@@ -5,7 +5,7 @@ export interface Atm {
 }
 
 export interface Note {
-  name: string;
+  name: number;
   amount: number;
 }
 

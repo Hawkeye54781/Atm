@@ -36,7 +36,18 @@
           <form [formGroup]="form" (ngSubmit)="withdraw()">
             <div class="form-group">
               <label for="amount">Amount</label>
-              <input type="number" class="form-control" id="amount" formControlName="amount">
+              <input
+                type="number"
+                class="form-control"
+                id="amount"
+                formControlName="amount"
+                [ngClass]="{
+                  'is-invaild': submitted && f['amount'].errors
+                }"
+              />
+              <span *ngIf="f['amount'].errors && submitted">
+                Please enter value divisable By five
+              </span>
             </div>
             <button type="submit" class="btn btn-primary">Withdraw</button>
           </form>
@@ -48,10 +59,20 @@
         <div class="card-header">
           <h3>Notes Dispenseed</h3>
         </div>
-        <!-- <div class="card-body">
-          <h3>{{ (accountDetails | async). }}</h3>
-        </div> -->
+        <div class="card-body">
+          <ng-container *ngIf="(notesDispensed | async)?.length; else notYet">
+            <ul>
+              <li *ngFor="let note of notesDispensed | async">
+                {{ note }}
+              </li>
+            </ul>
+          </ng-container>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+<ng-template #notYet>
+  <h3>No notes dispensed</h3>
+</ng-template>

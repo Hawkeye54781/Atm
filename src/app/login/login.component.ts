@@ -10,7 +10,7 @@ import {
 import { Router } from '@angular/router';
 import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { Account, Atm } from '../atm/atm.model';
-import { AtmService } from '../services/atm.service';
+import { AtmService } from '../../shared/services/atm.service';
 
 @Component({
   selector: 'app-login',
